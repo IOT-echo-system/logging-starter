@@ -20,14 +20,14 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: '8.5'
-          arguments: build
-
-      - name: Build with Gradle
-        run: ./gradlew build
+          gradle-version: '8.10'
+          arguments: clean build
+        env:
+          USERNAME: ${{ secrets.ACTOR }}
+          TOKEN: ${{ secrets.PAT_TOKEN }}
 
       - name: Publish to GitHub Packages
-        run: ./gradlew publish
+        run: ./gradlew clean publish
         env:
           USERNAME: ${{ secrets.ACTOR }}
           TOKEN: ${{ secrets.PAT_TOKEN }}

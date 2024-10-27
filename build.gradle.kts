@@ -12,7 +12,7 @@ publishing {
             from(components["java"])
             groupId = "com.robotutor"
             artifactId = "logging-starter"
-            version = "1.0.2"
+            version = "1.0.0"
 
             pom {
                 name.set("Reactive Logging Starter")
@@ -34,7 +34,7 @@ publishing {
     }
 }
 
-group = "com.shiviraj.iot"
+group = "com.robotutor.iot"
 version = "0.0.1"
 
 java {
