@@ -1,6 +1,5 @@
 package com.robotutor.loggingstarter
 
-import com.robotutor.loggingstarter.LogDetails
 import com.robotutor.loggingstarter.serializer.DefaultSerializer.serialize
 import org.slf4j.LoggerFactory
 
