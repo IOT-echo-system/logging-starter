@@ -13,7 +13,7 @@ import java.time.ZoneOffset
 fun <T> Mono<T>.logOnError(
     errorCode: String? = null,
     errorMessage: String,
-    additionalDetails: Map<String, Any> = emptyMap(),
+    additionalDetails: Map<String, Any?> = emptyMap(),
     searchableFields: Map<String, Any?> = emptyMap(),
     skipAdditionalDetails: Boolean = false,
 ): Mono<T> {
@@ -62,8 +62,8 @@ private fun errorResponseBodyFrom(exception: WebClientResponseException): Any {
 
 fun <T> Mono<T>.logOnSuccess(
     message: String,
-    additionalDetails: Map<String, Any> = emptyMap(),
-    searchableFields: Map<String, Any> = emptyMap(),
+    additionalDetails: Map<String, Any?> = emptyMap(),
+    searchableFields: Map<String, Any?> = emptyMap(),
     skipAdditionalDetails: Boolean = false,
     skipResponseBody: Boolean = true,
 ): Mono<T> {

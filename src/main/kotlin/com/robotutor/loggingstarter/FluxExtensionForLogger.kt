@@ -10,7 +10,7 @@ import reactor.core.publisher.Signal
 fun <T> Flux<T>.logOnError(
     errorCode: String? = null,
     errorMessage: String,
-    additionalDetails: Map<String, Any> = emptyMap(),
+    additionalDetails: Map<String, Any?> = emptyMap(),
     searchableFields: Map<String, Any?> = emptyMap(),
     skipAdditionalDetails: Boolean = false,
 ): Flux<T> {
@@ -59,8 +59,8 @@ private fun errorResponseBodyFrom(exception: WebClientResponseException): Any {
 
 fun <T> Flux<T>.logOnSuccess(
     message: String,
-    additionalDetails: Map<String, Any> = emptyMap(),
-    searchableFields: Map<String, Any> = emptyMap(),
+    additionalDetails: Map<String, Any?> = emptyMap(),
+    searchableFields: Map<String, Any?> = emptyMap(),
     skipAdditionalDetails: Boolean = false,
     skipResponseBody: Boolean = true,
 ): Flux<T> {

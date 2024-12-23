@@ -16,7 +16,7 @@ data class LogDetails(
     val responseTime: Long = -1,
     val responseBody: String? = null,
     val traceId: String? = null,
-    val additionalDetails: Map<String, Any> = emptyMap(),
+    val additionalDetails: Map<String, Any?> = emptyMap(),
     val searchableFields: Map<String, Any?> = emptyMap(),
 ) {
     companion object {
@@ -26,8 +26,8 @@ data class LogDetails(
             requestDetails: RequestDetails? = null,
             responseDetails: ResponseDetails? = null,
             traceId: String? = null,
-            searchableFields: Map<String, Any> = emptyMap(),
-            additionalDetails: Map<String, Any> = emptyMap(),
+            searchableFields: Map<String, Any?> = emptyMap(),
+            additionalDetails: Map<String, Any?> = emptyMap(),
         ): LogDetails {
             return LogDetails(
                 message = message,
