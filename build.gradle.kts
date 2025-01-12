@@ -12,7 +12,7 @@ publishing {
             from(components["java"])
             groupId = "com.robotutor"
             artifactId = "logging-starter"
-            version = "1.0.2"
+            version = "1.0.3"
 
             pom {
                 name.set("Reactive Logging Starter")
