@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 fun <T> Mono<T>.logOnError(
+    logger: Logger,
     errorCode: String? = null,
     errorMessage: String,
     additionalDetails: Map<String, Any?> = emptyMap(),
@@ -19,7 +20,6 @@ fun <T> Mono<T>.logOnError(
 ): Mono<T> {
     return doOnEach { signal ->
         if (signal.isOnError) {
-            val logger = Logger(this::class.java)
             val traceId = getTraceId(signal.contextView)
             val throwable = signal.throwable
 
@@ -61,6 +61,7 @@ private fun errorResponseBodyFrom(exception: WebClientResponseException): Any {
 }
 
 fun <T> Mono<T>.logOnSuccess(
+    logger: Logger,
     message: String,
     additionalDetails: Map<String, Any?> = emptyMap(),
     searchableFields: Map<String, Any?> = emptyMap(),
@@ -82,7 +83,6 @@ fun <T> Mono<T>.logOnSuccess(
                     modifiedAdditionalDetails[LogConstants.RESPONSE_BODY] = "No response body found"
             }
 
-            val logger = Logger(this::class.java)
             val logDetails = LogDetails.create(
                 message = message,
                 traceId = getTraceId(signal.contextView),

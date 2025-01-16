@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Signal
 
 fun <T> Flux<T>.logOnError(
+    logger: Logger,
     errorCode: String? = null,
     errorMessage: String,
     additionalDetails: Map<String, Any?> = emptyMap(),
@@ -16,7 +17,6 @@ fun <T> Flux<T>.logOnError(
 ): Flux<T> {
     return doOnEach { signal ->
         if (signal.isOnError) {
-            val logger = Logger(this::class.java)
             val traceId = getTraceId(signal.contextView)
             val throwable = signal.throwable
 
@@ -58,6 +58,7 @@ private fun errorResponseBodyFrom(exception: WebClientResponseException): Any {
 }
 
 fun <T> Flux<T>.logOnSuccess(
+    logger: Logger,
     message: String,
     additionalDetails: Map<String, Any?> = emptyMap(),
     searchableFields: Map<String, Any?> = emptyMap(),
@@ -65,7 +66,7 @@ fun <T> Flux<T>.logOnSuccess(
     skipResponseBody: Boolean = true,
 ): Flux<T> {
     return doOnEach { signal ->
-        if (signal.isOnNext) {
+        if (signal.isOnComplete) {
             val modifiedAdditionalDetails = additionalDetails.toMutableMap()
 
             if (skipAdditionalDetails) {
@@ -79,7 +80,6 @@ fun <T> Flux<T>.logOnSuccess(
                     modifiedAdditionalDetails[LogConstants.RESPONSE_BODY] = "No response body found"
             }
 
-            val logger = Logger(this::class.java)
             val logDetails = LogDetails.create(
                 message = message,
                 traceId = getTraceId(signal.contextView),
