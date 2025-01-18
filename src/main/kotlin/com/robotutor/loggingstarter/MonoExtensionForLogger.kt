@@ -1,7 +1,10 @@
 package com.robotutor.loggingstarter
 
 import com.google.gson.JsonSyntaxException
+import com.robotutor.loggingstarter.ReactiveContext.getPremisesId
 import com.robotutor.loggingstarter.ReactiveContext.getTraceId
+import com.robotutor.loggingstarter.models.RequestDetails
+import com.robotutor.loggingstarter.models.ResponseDetails
 import com.robotutor.loggingstarter.serializer.DefaultSerializer
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Mono
@@ -21,6 +24,7 @@ fun <T> Mono<T>.logOnError(
     return doOnEach { signal ->
         if (signal.isOnError) {
             val traceId = getTraceId(signal.contextView)
+            val premisesId = getPremisesId(signal.contextView)
             val throwable = signal.throwable
 
             val modifiedAdditionalDetails = additionalDetails.toMutableMap()
@@ -36,6 +40,7 @@ fun <T> Mono<T>.logOnError(
                 errorCode = errorCode,
                 message = errorMessage,
                 traceId = traceId,
+                premisesId = premisesId,
                 additionalDetails = modifiedAdditionalDetails.toMap(),
                 searchableFields = searchableFields,
                 responseTime = getResponseTime(signal.contextView),
@@ -86,6 +91,7 @@ fun <T> Mono<T>.logOnSuccess(
             val logDetails = LogDetails.create(
                 message = message,
                 traceId = getTraceId(signal.contextView),
+                premisesId = getPremisesId(signal.contextView),
                 searchableFields = searchableFields,
                 errorCode = null,
                 requestDetails = RequestDetails.create(signal.contextView),

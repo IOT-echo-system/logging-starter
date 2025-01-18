@@ -1,0 +1,6 @@
+fileignoreconfig:
+- filename: src/main/kotlin/com/robotutor/loggingstarter/ReactiveContext.kt
+  checksum: dcc532f40a30244fd9aff9ec1e021bbfc055cf55726999691afc5cb384125b9f
+- filename: src/main/kotlin/com/robotutor/loggingstarter/models/ServerWebExchangeDTO.kt
+  checksum: ff8810e811e1726bd1191cf15b522f5e2ba11168e1874bf7c5ea4d79906415ee
+version: ""

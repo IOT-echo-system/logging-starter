@@ -1,8 +1,8 @@
 package com.robotutor.loggingstarter
 
+import com.robotutor.loggingstarter.models.RequestDetails
+import com.robotutor.loggingstarter.models.ResponseDetails
 import org.springframework.http.HttpMethod
-import org.springframework.web.server.ServerWebExchange
-import reactor.util.context.ContextView
 
 data class LogDetails(
     val errorCode: String? = null,
@@ -15,7 +15,8 @@ data class LogDetails(
     val responseStatusCode: String? = null,
     val responseTime: Long = -1,
     val responseBody: String? = null,
-    val traceId: String? = null,
+    val traceId: String = "missing-trace-id",
+    val premisesId: String = "missing-premises-id",
     val additionalDetails: Map<String, Any?> = emptyMap(),
     val searchableFields: Map<String, Any?> = emptyMap(),
 ) {
@@ -25,7 +26,8 @@ data class LogDetails(
             errorCode: String? = null,
             requestDetails: RequestDetails? = null,
             responseDetails: ResponseDetails? = null,
-            traceId: String? = null,
+            traceId: String = "missing-trace-id",
+            premisesId: String = "missing-premises-id",
             searchableFields: Map<String, Any?> = emptyMap(),
             additionalDetails: Map<String, Any?> = emptyMap(),
         ): LogDetails {
@@ -41,54 +43,10 @@ data class LogDetails(
                 responseHeaders = responseDetails?.headers,
                 responseBody = responseDetails?.body,
                 traceId = traceId,
+                premisesId = premisesId,
                 searchableFields = searchableFields,
                 additionalDetails = additionalDetails
             )
-        }
-    }
-}
-
-
-class RequestDetails(
-    val method: HttpMethod,
-    val headers: Map<String, Any>? = null,
-    var uriWithParams: String? = null,
-    val body: String? = null
-) {
-    companion object {
-        fun create(contextView: ContextView): RequestDetails? {
-            if (contextView.hasKey(ServerWebExchange::class.java)) {
-                val request = contextView.get(ServerWebExchange::class.java).request
-                return RequestDetails(
-                    method = request.method,
-                    headers = request.headers,
-                    uriWithParams = request.uri.toString(),
-                    body = request.body.toString()
-                )
-            }
-            return null
-        }
-    }
-}
-
-class ResponseDetails(
-    val headers: Map<String, Any>? = null,
-    val statusCode: String = "",
-    val time: Long = -1,
-    val body: String? = null
-) {
-    companion object {
-        fun create(contextView: ContextView): ResponseDetails? {
-            if (contextView.hasKey(ServerWebExchange::class.java)) {
-                val response = contextView.get(ServerWebExchange::class.java).response
-                return ResponseDetails(
-                    headers = response.headers,
-                    statusCode = response.statusCode.toString(),
-                    time = getResponseTime(contextView),
-                    body = response.bufferFactory().toString()
-                )
-            }
-            return null
         }
     }
 }

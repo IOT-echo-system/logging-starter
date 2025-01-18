@@ -1,21 +1,20 @@
 package com.robotutor.loggingstarter
 
+import com.robotutor.loggingstarter.models.ServerWebExchangeDTO
 import org.springframework.http.HttpHeaders
-import org.springframework.web.server.ServerWebExchange
 import reactor.util.context.ContextView
 
 internal object ReactiveContext {
 
     private const val TRACE_ID_HEADER_KEY = "x-trace-id"
+    private const val PREMISES_ID_HEADER_KEY = "x-premises-id"
 
     fun getTraceId(context: ContextView): String = getValueFromRequestHeader(context, TRACE_ID_HEADER_KEY)
         ?: "missing-trace-id"
 
+    fun getPremisesId(context: ContextView): String = getValueFromRequestHeader(context, PREMISES_ID_HEADER_KEY)
+        ?: "missing-premises-id"
 
-
-    private fun getValueFromSubscriberContext(key: String, context: ContextView): String? {
-        return if (context.hasKey(key)) context.get(key) else null
-    }
 
     private fun getValueFromRequestHeader(
         context: ContextView,
@@ -23,15 +22,16 @@ internal object ReactiveContext {
     ): String? {
         return when {
             context.isEmpty -> "EMPTY_CONTEXT"
-            context.hasKey(ServerWebExchange::class.java) -> {
-                val valueFromIncomingRequest =
-                    context.get(ServerWebExchange::class.java).request.headers[headerKey]?.first()
-                if (valueFromIncomingRequest == null && context.hasKey("headers")) {
+            context.hasKey(ServerWebExchangeDTO::class.java) -> {
+                val valueFromRequest = context.get(ServerWebExchangeDTO::class.java)
+                    .requestDetails.headers[headerKey]?.first()
+                if (valueFromRequest == null && context.hasKey("headers")) {
                     return context.get<HttpHeaders>("headers")[headerKey]?.firstOrNull()
                 } else {
-                    valueFromIncomingRequest
+                    valueFromRequest
                 }
             }
+
             context.hasKey("headers") -> context.get<HttpHeaders>("headers")[headerKey]?.firstOrNull()
             else -> null
         }
