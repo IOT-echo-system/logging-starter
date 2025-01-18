@@ -3,6 +3,8 @@ package com.robotutor.loggingstarter
 import com.google.gson.JsonSyntaxException
 import com.robotutor.loggingstarter.ReactiveContext.getPremisesId
 import com.robotutor.loggingstarter.ReactiveContext.getTraceId
+import com.robotutor.loggingstarter.models.RequestDetails
+import com.robotutor.loggingstarter.models.ResponseDetails
 import com.robotutor.loggingstarter.serializer.DefaultSerializer
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.core.publisher.Flux
